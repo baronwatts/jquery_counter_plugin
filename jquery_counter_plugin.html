@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery Counter Plugin</title>
+</head>
+<body>
+
+<div id="counter1"></div>
+<div id="counter2"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+	;(function($){
+		$.fn.count = function(customOptions){
+			//The arguments in $.extend({}, arg1, arg2) are all objects.
+			//Both arguments which are objects will merge into the empty object. 
+			//The properties in the second argument will overwrite the properties in first argument if they are the same.
+			var options = $.extend({}, $.fn.count.defaultOptions, customOptions);
+
+			//this.each() enables us to return more than 1 HTML elements in our selector. ex) $('.div1', '.div2', '.div3');
+			return this.each(function(){
+				var $this = $(this);
+
+				//We created a property called startCount that was set on $.fn.count.defaultOptions
+				$this.text(options.startCount+'');
+
+				var myInterval = window.setInterval(function(){
+					var currentCount = parseFloat($this.text());
+					var newCount = currentCount + 1;
+					$this.text(newCount+'');
+				}, 1000);
+			});
+		};
+
+		//attaches an object to the count method called defaultOptions and creates a property called startCount.
+		$.fn.count.defaultOptions = {
+			startCount:100
+		}
+
+	})(jQuery);
+
+	//overwrite default options
+	jQuery.fn.count.defaultOptions.startCount = 200;
+
+	jQuery('#counter1').count();// will start at 200 instead of 0
+	jQuery('#counter2').count({startCount: 500});// will overwrite any default values
+
+</script>
+</body>
+</html>
